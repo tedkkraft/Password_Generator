@@ -1,1 +1,1 @@
-I'm having a lot of difficulty with this assignment and am out of town this weekend, so I will have to wait until Monday office hours to get some help.
+

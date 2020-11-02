@@ -1,4 +1,3 @@
-// Assignment Code
 var generateBtn = document.querySelector("#generate");
 
 //Character arrays
@@ -18,6 +17,10 @@ function getLength() {
     alert("Invalid entry")
     getLength();
   }
+  else {
+    console.log("passwordLength: " + passwordLength)
+    return passwordLength;
+  }
 }
 
 // Get character types from user...
@@ -27,24 +30,80 @@ function getTypes() {
   var numericCheck = $("#numericBox").is(":checked");
   var specialCheck = $("#specialBox").is(":checked");
 
-  if (lowerCheck = true) {
-
+  if (
+    lowerCheck === false &&
+    upperCheck === false &&
+    numericCheck === false &&
+    specialCheck === false
+  ) {
+    alert('Must select at least one character type');
+    return;
   }
+
+  var passwordTypes = {
+    lowerCheck: lowerCheck,
+    upperCheck: upperCheck,
+    numericCheck: numericCheck,
+    specialCheck: specialCheck
+  };
+
+  return passwordTypes;
+
 }
+
+// Function for getting a random element from an array
+function getRandom(arr) {
+  var randIndex = Math.floor(Math.random() * arr.length);
+  var randElement = arr[randIndex];
+
+  return randElement;
+}
+
 // Generate password
 function generatePassword() {
-  var i;
-  for (i = 0; i < passwordLength; i++) {
+  var length = getLength();
+  var types = getTypes();
+  var result = [];
+  var possibleCharacters = [];
+  var guaranteedCharacters = [];
 
+  if (types.lowerCheck) {
+    possibleCharacters = possibleCharacters.concat(lowercase);
+    guaranteedCharacters.push(getRandom(lowercase));
   }
+
+  if (types.upperCheck) {
+    possibleCharacters = possibleCharacters.concat(uppercase);
+    guaranteedCharacters.push(getRandom(uppercase));
+  }
+
+  if (types.numericCheck) {
+    possibleCharacters = possibleCharacters.concat(numeric);
+    guaranteedCharacters.push(getRandom(numeric));
+  }
+
+  if (types.specialCheck) {
+    possibleCharacters = possibleCharacters.concat(specialChar);
+    guaranteedCharacters.push(getRandom(specialChar));
+  }
+
+  for (var i = 0; i < length; i++) {
+    var possibleCharacter = getRandom(possibleCharacters);
+
+    result.push(possibleCharacter);
+  }
+
+  for (var i = 0; i < guaranteedCharacters.length; i++) {
+    result[i] = guaranteedCharacters[i];
+  }
+  console.log(result);
+
+  //Turn password array into a string
+  return result.join('');
 }
 
 // Write password to the #password input
 function writePassword() {
-  getLength();
-  getTypes();
-  generatePassword();
-
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
